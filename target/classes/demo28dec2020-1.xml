@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="61c47047-795c-4dc0-9555-ae17663d7202" >
+		<http:listener-connection host="0.0.0.0" port="3666" />
+	</http:listener-config>
+	<flow name="demo28dec2020-1Flow" doc:id="09352a6e-f08e-474f-8b5c-99e04843494a" >
+		<http:listener doc:name="/GET hello" doc:id="153742bf-38e5-4827-9e5a-338b0720ba98" config-ref="HTTP_Listener_config" path="/hello"/>
+		<logger level="INFO" doc:name="Logger" doc:id="833b226b-4969-4a7a-bbaa-584d6fed4764" message="** Main flow **" />
+		<set-variable value="#[attributes.queryParams.number1]" doc:name="Set Variable" doc:id="db7aea72-f92e-4a48-8821-f4dec5bc0911" variableName="var1"/>
+		<flow-ref doc:name="Flow Reference" doc:id="b421e3b4-4c47-46bb-b35b-ae09da57ab51" name="SubFlow"/>
+		<set-payload value="#[output application/java
+---
+vars.var1 as String]" doc:name="Set Payload" doc:id="2a81829b-8d57-4233-8f48-af4fb4f82c5f" />
+	</flow>
+	<sub-flow name="SubFlow" doc:id="3d5d83d3-27e5-4e19-ab68-bee2243573c8" >
+		<logger level="INFO" doc:name="Logger" doc:id="e2d40140-6dbc-416b-8b2f-5c83f85d916f" message="** This is a sub flow **"/>
+	</sub-flow>
+	<flow name="PrivateFlow" doc:id="b4c07602-e5aa-4cbd-b4ed-40bbdcc04116" >
+		<set-variable value="99" doc:name="Set Variable" doc:id="6693a82a-67b4-49e0-9e55-c91e59a40d9d" variableName="var1"/>
+		<logger level="INFO" doc:name="Logger" doc:id="37205244-4d77-4168-9589-b9e24e36fbd0" message="** This isPrivate flow **"/>
+	</flow>
+</mule>
